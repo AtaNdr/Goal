@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Progress Tracker</title>
+  
+  <!-- PWA Meta Tags -->
+  <meta name="theme-color" content="#0a0a0a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Progress Tracker">
+  <meta name="mobile-web-app-capable" content="yes">
+  
+  <!-- PWA Icons -->
+  <link rel="icon" type="image/png" sizes="192x192" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9IiMwYTBhMGEiLz4KPGNpcmNsZSBjeD0iOTYiIGN5PSI3NiIgcj0iMzIiIGZpbGw9IiMxMGI5ODEiLz4KPHJlY3QgeD0iNDgiIHk9IjEyMCIgd2lkdGg9Ijk2IiBoZWlnaHQ9IjgiIHJ4PSI0IiBmaWxsPSIjMzM0MTU1Ii8+CjxyZWN0IHg9IjQ4IiB5PSIxMjAiIHdpZHRoPSI2NCIgaGVpZ2h0PSI4IiByeD0iNCIgZmlsbD0iIzEwYjk4MSIvPgo8L3N2Zz4K">
+  <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiByeD0iMjQiIGZpbGw9IiMwYTBhMGEiLz4KPGNpcmNsZSBjeD0iOTYiIGN5PSI3NiIgcj0iMzIiIGZpbGw9IiMxMGI5ODEiLz4KPHJlY3QgeD0iNDgiIHk9IjEyMCIgd2lkdGg9Ijk2IiBoZWlnaHQ9IjgiIHJ4PSI0IiBmaWxsPSIjMzM0MTU1Ii8+CjxyZWN0IHg9IjQ4IiB5PSIxMjAiIHdpZHRoPSI2NCIgaGVpZ2h0PSI4IiByeD0iNCIgZmlsbD0iIzEwYjk4MSIvPgo8L3N2Zz4K">
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIlByb2dyZXNzIFRyYWNrZXIiLAogICJzaG9ydF9uYW1lIjogIlByb2dyZXNzIiwKICAiZGVzY3JpcHRpb24iOiAiVGltZWxpbmUgJiBNaWxlc3RvbmUgQW5hbHlzaXMiLAogICJzdGFydF91cmwiOiAiLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzBhMGEwYSIsCiAgInRoZW1lX2NvbG9yIjogIiMwYTBhMGEiLAogICJvcmllbnRhdGlvbiI6ICJwb3J0cmFpdCIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjNhV1IwYUQwaU1Ua3lJaUJvWldsbmFIUTlJakU1TWlJZ2RtbGxkMEp2ZUQwaU1DQXdJREU1TWlBeE9USWlJR1pwYkd3OUltNXZibVVpSUhodGJHNXpQU0pvZEhSd09pOHZkM2QzTG5jekxtOXlaeTh5TURBd0wzTjJaeUkrQ2p4eVpXTjBJSGRwWkhSb1BTSXhPVElpSUdobGFXZG9kRDBpTVRreUlpQnllRDBpTWpRaUlHWnBiR3c5SWlNd1lUQmhNR0VpTHo0S1BHTnBjbU5zWlNCallWZGpQU0k1TmlJZ1kzazlJamMySWlCeVBTSXpNaUlnWm1sc2JEMGlJekV3WWprNE1TSXZQZ285Y21WamRDQjRQU0kwT0NJZ2VUMGlNVEl3SWlCM2FXUjBhRDBpT1RZaUlHaGxhV2RvZEQwaU9DSWdjbmc5SWpRaUlHWnBiR3c5SWlNek16UXhOVFVpTHo0S1BISmxZM1FnZUQwaU5EZ2lJSGs5SWpFeU1DSWdkMmxrZEdnOUlqWTBJaUJvWldsbmFIUTlJamdpSUhKNFBTSTBJaUJtYVd4c1BTSWpNVEJpT1RneElpOCtDand2YzNablBnbz0iLAogICAgICAic2l6ZXMiOiAiMTkyeDE5MiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9LAogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjNhV1IwYUQwaU5URXlJaUJvWldsbmFIUTlJalV4TWlJZ2RtbGxkMEp2ZUQwaU1DQXdJRFV4TWlBMU1USWlJR1pwYkd3OUltNXZibVVpSUhodGJHNXpQU0pvZEhSd09pOHZkM2QzTG5jekxtOXlaeTh5TURBd0wzTjJaeUkrQ2p4eVpXTjBJSGRwWkhSb1BTSTFNVElpSUdobGFXZG9kRDBpTlRFeUlpQnllRDBpTmpRaUlHWnBiR3c5SWlNd1lUQmhNR0VpTHo0S1BHTnBjbU5zWlNCallWZGpQU0l5TlRZaUlHTjVQU0l5TURJZ2NqMGlPRGdpSUdacGJHdzlJaU14TUdJNU9ERWlMejRLUEhKbFkzUWdlRDBpTVRJNElpQjVQU0l6TWpBaUlIZHBaSFJvUFNJeU5UWWlJR2hsYVdkb2REMGlNakFpSUhKNFBTSXhNaUlnWm1sc2JEMGlJek16TkRFeE5UVWlMejRLUEhKbFkzUWdlRDBpTVRJNElpQjVQU0l6TWpBaUlIZHBaSFJvUFNJeE56SWlJR2hsYVdkb2REMGlNakFpSUhKNFBTSXhNaUlnWm1sc2JEMGlJekV3WWprNE1TSXZQZ284TDNOMlp6NEsiLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-me: #10b981;
+      --primary-co: #3b82f6;
+      --bg-dark: #0a0a0a;
+      --bg-card: #111111;
+      --text-primary: #ffffff;
+      --text-secondary: #a1a1aa;
+      --text-muted: #71717a;
+      --border: #27272a;
+      --border-hover: #3f3f46;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+    }
+
+    .app-header {
+      padding: 1.5rem 1.5rem 1rem 1.5rem;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .app-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .app-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .tab-switcher {
+      display: flex;
+      margin: 0 1.5rem 1.5rem 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 4px;
+      flex-shrink: 0;
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0.75rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .tab-btn.active {
+      color: var(--text-primary);
+      background: var(--border-hover);
+    }
+
+    .tab-btn.active.me {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--primary-me);
+    }
+
+    .tab-btn.active.co {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--primary-co);
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 0 1.5rem 1.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .progress-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--primary-me);
+      transition: background 0.3s ease;
+    }
+
+    .progress-card.co::before {
+      background: var(--primary-co);
+    }
+
+    .card-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .path-name {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .path-date {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .stat-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 0.5rem;
+      text-align: center;
+      transition: background 0.2s ease;
+    }
+
+    .stat-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.4rem;
+    }
+
+    .stat-value {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .stat-unit {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      margin-top: 0.2rem;
+    }
+
+    .progress-section {
+      margin-bottom: 1.25rem;
+      flex-shrink: 0;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.6rem;
+    }
+
+    .progress-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .progress-percent {
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 0.2rem 0.6rem;
+      border-radius: 10px;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--primary-me);
+      transition: all 0.3s ease;
+    }
+
+    .progress-percent.co {
+      background: rgba(59, 130, 246, 0.15);
+      color: var(--primary-co);
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--primary-me);
+      border-radius: 3px;
+      transition: width 1s ease-out;
+      position: relative;
+    }
+
+    .progress-fill.completed {
+      background: var(--primary-me);
+      position: relative;
+    }
+
+    .progress-fill.completed.co {
+      background: var(--primary-co);
+    }
+
+    .progress-fill.completed::after {
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    }
+
+    .progress-fill.overdue {
+      background: linear-gradient(90deg, var(--primary-me), #f59e0b);
+      animation: overduePulse 2s ease-in-out infinite;
+    }
+
+    .progress-fill.overdue.co {
+      background: linear-gradient(90deg, var(--primary-co), #f59e0b);
+    }
+
+    @keyframes overduePulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      animation: shine 2.5s infinite;
+    }
+
+    @keyframes shine {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(200%); }
+    }
+
+    .summary {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .summary-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.4rem;
+    }
+
+    .summary-text {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .tab-content {
+      display: none;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .tab-content.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Smooth transitions */
+    .progress-card {
+      transition: all 0.3s ease;
+    }
+
+    /* Remove all mobile-specific overrides for cleaner code */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.1s !important;
+      }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-header">
+    <h1 class="app-title">Progress Tracker</h1>
+    <p class="app-subtitle">Timeline & Milestone Analysis</p>
+  </div>
+
+  <div class="tab-switcher">
+    <button class="tab-btn active me" onclick="switchTab('me')">Me</button>
+    <button class="tab-btn co" onclick="switchTab('co')">Co</button>
+  </div>
+
+  <div class="main-content">
+    <div id="me-content" class="tab-content active">
+      <div class="progress-card me" id="me-card"></div>
+    </div>
+    
+    <div id="co-content" class="tab-content">
+      <div class="progress-card co" id="co-card"></div>
+    </div>
+  </div>
+
+  <script>
+    const data = {
+      me: {
+        name: "Me",
+        startDate: new Date("2024-11-07T00:00:00"),
+        subtitle: "Personal Development"
+      },
+      co: {
+        name: "Co",
+        startDate: new Date("2024-10-07T00:00:00"),
+        subtitle: "Collaborative Growth"
+      }
+    };
+
+    const now = new Date();
+
+    function formatDate(date) {
+      return date.toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric',
+        year: 'numeric'
+      });
+    }
+
+    function calculateMetrics(startDate) {
+      const diff = now - startDate;
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const months = (days / 30.44).toFixed(1);
+      const monthsElapsed = diff / (1000 * 60 * 60 * 24 * 30.44);
+      
+      // Calculate progress percentages - keep at 100% if exceeded
+      const pct12Raw = (monthsElapsed / 12) * 100;
+      const pct18Raw = (monthsElapsed / 18) * 100;
+      
+      const pct12 = Math.min(pct12Raw, 100);
+      const pct18 = Math.min(pct18Raw, 100);
+      
+      // Check if deadlines are passed
+      const deadline12 = new Date(startDate);
+      deadline12.setMonth(deadline12.getMonth() + 12);
+      const deadline18 = new Date(startDate);
+      deadline18.setMonth(deadline18.getMonth() + 18);
+      
+      const is12Overdue = now > deadline12;
+      const is18Overdue = now > deadline18;
+      
+      const remaining = Math.max(0, Math.ceil((deadline18 - now) / (1000 * 60 * 60 * 24)));
+      
+      return { 
+        days, 
+        months, 
+        pct12, 
+        pct18, 
+        remaining,
+        is12Overdue,
+        is18Overdue,
+        deadline12,
+        deadline18
+      };
+    }
+
+    function createCard(pathKey) {
+      const path = data[pathKey];
+      const metrics = calculateMetrics(path.startDate);
+      
+      return `
+        <div class="card-header">
+          <div class="path-name">${path.name}</div>
+          <div class="path-date">Started ${formatDate(path.startDate)}</div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-label">Days</div>
+            <div class="stat-value">${metrics.days}</div>
+            <div class="stat-unit">elapsed</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Months</div>
+            <div class="stat-value">${metrics.months}</div>
+            <div class="stat-unit">duration</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Progress</div>
+            <div class="stat-value">${metrics.pct18.toFixed(0)}%</div>
+            <div class="stat-unit">complete</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Left</div>
+            <div class="stat-value">${metrics.remaining}</div>
+            <div class="stat-unit">days</div>
+          </div>
+        </div>
+
+        <div class="progress-section">
+          <div class="progress-header">
+            <div class="progress-label">12-Month Milestone</div>
+            <div class="progress-percent ${pathKey}">${metrics.pct12.toFixed(1)}%</div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill ${pathKey} ${metrics.is12Overdue && metrics.pct12 >= 100 ? 'overdue' : metrics.pct12 >= 100 ? 'completed' : ''}" style="width: ${metrics.pct12}%"></div>
+          </div>
+        </div>
+
+        <div class="progress-section">
+          <div class="progress-header">
+            <div class="progress-label">18-Month Target</div>
+            <div class="progress-percent ${pathKey}">${metrics.pct18.toFixed(1)}%</div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill ${pathKey} ${metrics.is18Overdue && metrics.pct18 >= 100 ? 'overdue' : metrics.pct18 >= 100 ? 'completed' : ''}" style="width: ${metrics.pct18}%"></div>
+          </div>
+        </div>
+
+        <div class="summary">
+          <div class="summary-title">${path.subtitle}</div>
+          <div class="summary-text">
+            ${metrics.months} months active • ${metrics.remaining} days until completion
+          </div>
+        </div>
+      `;
+    }
+
+    function switchTab(tabName) {
+      // Update buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`.tab-btn.${tabName}`).classList.add('active');
+      
+      // Update content
+      document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+      document.getElementById(`${tabName}-content`).classList.add('active');
+    }
+
+    function init() {
+      document.getElementById('me-card').innerHTML = createCard('me');
+      document.getElementById('co-card').innerHTML = createCard('co');
+      
+      // Register service worker for PWA
+      if ('serviceWorker' in navigator) {
+        const swCode = `
+          const CACHE_NAME = 'progress-tracker-v1';
+          const urlsToCache = ['/'];
+          
+          self.addEventListener('install', event => {
+            event.waitUntil(
+              caches.open(CACHE_NAME)
+                .then(cache => cache.addAll(urlsToCache))
+            );
+          });
+          
+          self.addEventListener('fetch', event => {
+            event.respondWith(
+              caches.match(event.request)
+                .then(response => response || fetch(event.request))
+            );
+          });
+        `;
+        
+        const blob = new Blob([swCode], { type: 'application/javascript' });
+        const swUrl = URL.createObjectURL(blob);
+        
+        navigator.serviceWorker.register(swUrl)
+          .then(() => console.log('PWA ready'))
+          .catch(() => console.log('PWA registration failed'));
+      }
+    }
+
+    window.switchTab = switchTab;
+    document.addEventListener('DOMContentLoaded', init);
+    
+    // Refresh every 5 minutes
+    setInterval(init, 300000);
+  </script>
+</body>
+</html>
